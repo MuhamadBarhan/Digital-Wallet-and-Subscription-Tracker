@@ -2,6 +2,88 @@
 
 {{outlet}}
 
-{{! The following component displays Ember's default welcome message. }}
-<WelcomePage />
-{{! Feel free to remove this! }}
+<h3>Digital Wallet &amp; Subscription Tracker</h3>
+
+<div class="container">
+    <div class="my-wallet">
+        <h2>My Wallet</h2>
+        <p class="amount-title">Current Balance</p>
+        <span class="amount"><i class="bi bi-currency-rupee"></i> {{this.amount}}</span>
+        <div class="wallet-btn-container">
+            <button class="wallet-btn withdraw" type="button">Withdraw</button>
+            <button class="wallet-btn add-money" type="button" {{on "click" this.toggleModal}}>Add Money</button>
+        </div>
+
+
+        {{#if this.isModelOpen}}
+        <div class="overlay"></div>
+        <div class="add-modal">
+            <i class="bi bi-x-lg close-icon" {{on "click" this.toggleModal}}></i>
+            <label for="amount-value">Amount</label>
+            <input type="number" placeholder="Enter Amount" id="amount-value">
+            <button class="wallet-btn" type="button" {{on "click" this.addToWallet}}>Add to Wallet</button>
+        </div>
+
+        {{/if}}
+    </div>
+
+    <div class="subscription-tracker">
+        <div class="subscription-tracker-header">
+            <div class="subscription-tracker-head">
+                <span class="heading">Subscription Tracker</span>
+                <span class="description">Your subscriptions</span>
+            </div>
+            <button class="add-sub-btn" type="button" {{on "click" this.toggleSubModal}}>Add Subscription</button>
+        </div>
+
+        <div class="subscriptions">
+            {{#each this.subscriptions as |subscription|}}
+            <div class="subscription-card">
+                <i class="bi bi-pencil-square edit-icon"></i>
+                <span class="name">{{subscription.name}}</span>
+                <span class="sub-plan">{{subscription.subplan}}</span>
+                <div>
+                    <span class="sub-amount"><i class="bi bi-currency-rupee"></i> {{subscription.subamount}}</span>/
+                    <span class="billing-cycle">{{subscription.billcycle}}</span>
+                </div>
+                <div>
+                    <span class="category">{{subscription.category}}</span>
+                    <span class="payment-method">{{subscription.paymethod}}</span>
+                </div>
+
+            </div>
+            {{/each}}
+        </div>
+
+        {{#if this.isSubModelOpen}}
+        <div class="overlay"></div>
+        <div class="add-sub-modal">
+            <i class="bi bi-x-lg close-icon" {{on "click" this.toggleSubModal}}></i>
+            <label for="amount-value">Name</label>
+            <input type="text" placeholder="Enter Name" id="name" {{on "input" this.updateName}}>
+            <PowerSelect @selected={{this.subplan}} @options={{this.plans}} @onChange={{this.updatePlan}}
+                @labelText="Subscription Plan" as |plan|>
+                {{plan}}
+            </PowerSelect>
+            <PowerSelect @selected={{this.billcycle}} @options={{this.billings}} @onChange={{this.updateBilling}}
+                @labelText="Billing Cycle" as |billing|>
+                {{billing}}
+            </PowerSelect>
+            <label for="sub-amount">Amount</label>
+            <input type="number" placeholder="Enter Amount" id="sub-amount" {{on "input" this.updateAmount}}>
+            <PowerSelect @selected={{this.category}} @options={{this.categories}} @onChange={{this.updateCategory}}
+                @labelText="Category" as |category|>
+                {{category}}
+            </PowerSelect>
+            <PowerSelect @selected={{this.paymethod}} @options={{this.paymentMethod}} @onChange={{this.updatePayment}}
+                @labelText="Payment Method" as |pay|>
+                {{pay}}
+            </PowerSelect>
+            <button class="wallet-btn" type="button" {{on "click" this.addSubscription}}>Add Subscription</button>
+        </div>
+
+        {{/if}}
+
+    </div>
+</div>
+<BasicDropdownWormhole />

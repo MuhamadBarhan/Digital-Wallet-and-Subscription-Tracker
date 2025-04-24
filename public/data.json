@@ -1,0 +1,12 @@
+{
+    "subscriptions": [
+        {
+            "name":"Netflix",
+            "subplan":"Standard",
+            "billcycle":"Monthly",
+            "amount":"500",
+            "category":"Entertainment",
+            "paymethod":"Debit Card"
+        }
+    ]
+}
