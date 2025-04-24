@@ -44,7 +44,7 @@ export default class ApplicationController extends Controller {
     }
 
     @action loadAmount() {
-        const resAmount= localStorage.getItem("amount");
+        const resAmount= localStorage.getItem("amount") ||0;
         this.amount=resAmount;
     }
 
