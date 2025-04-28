@@ -1,6 +1,7 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
 body {
     font-family: Poppins;
+    margin: 1.5rem 3rem;
 }
 
 .overlay {
@@ -11,13 +12,29 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1;
+}
+
+.head-text {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.head-desc-text, .description {
+    font-size: 16px;
+    color: #676767;
 }
 
 .container {
     display: flex;
     gap: 2rem;
-    padding: 1rem;
+    margin: 2rem 0;
 
+}
+.left {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
 }
 
 .my-wallet {
@@ -25,12 +42,11 @@ body {
     color: #fff;
     border-radius: 10px;
     padding: 2rem;
-    width: 40%;
-    height: 350px;
+    height: 250px;
 }
 
 .amount-title {
-    color: #3e5058;
+    color: #2b3e47;
 }
 
 .amount {
@@ -38,23 +54,23 @@ body {
 }
 
 .wallet-btn-container {
-    margin: 1rem;
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 2rem;
     display: flex;
-    gap: 2rem;
-    justify-content: center;
-    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
 }
 
 .wallet-btn {
     border: none;
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
     border-radius: 10px;
-    background-color: #2a2a2a;
-    color: #fff;
+    background-color: #fcfcfc;
+    color: #353535;
     cursor: pointer;
+    font-weight: 800;
+}
+
+.wallet-btn i {
+    font-weight: 800;
 }
 
 .add-modal {
@@ -86,16 +102,72 @@ input {
     cursor: pointer;
 }
 
+.transaction-history {
+    margin-top: 1rem;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 1px 2px 4px rgb(0 0 0 / 20%);
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.transaction {
+    border-bottom: 1px solid #ccc;
+    margin: 1.5rem auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter {
+    border: 1px solid #ccc;
+    background: transparent;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.filter-modal {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 10px;
+    top: 4.5rem;
+    right: 1rem;
+    width: 200px;
+}
+
+.transaction span {
+    width: 100px;
+}
+
+.hist-name {
+    font-size: 16px;
+}
+
+.hist-desc {
+    font-size: 14px;
+    color: #575757;
+}
+
 .subscription-tracker {
     background-color: #fff;
     box-shadow: 1px 2px 4px rgb(0 0 0 / 20%);
+    border: 1px solid #ddd;
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    border: 1px solid #ddd;
+    width: 60%;
 }
 
-.add-sub-btn {
+.add-btn, .add-sub-btn {
     border: none;
     padding: 0.6rem 1rem;
     background-color: #2a2a2a;
@@ -104,11 +176,16 @@ input {
     cursor: pointer;
 }
 
+.add {
+    margin: 1rem 0;
+}
+
 .subscription-tracker-header {
     display: flex;
     align-items: start;
     justify-content: space-between;
     gap: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .subscription-tracker-head {
@@ -117,21 +194,21 @@ input {
 }
 
 .heading {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .subscriptions {
     display: flex;
-    gap: 0.6rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    width: 100%;
+
 }
 
 .subscription-card {
-    margin: 1rem auto;
+    margin: 1rem 0;
     padding: 1.5rem;
-    width: 200px;
+    width: 350px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -140,6 +217,7 @@ input {
     gap: 0.5rem;
     box-shadow: 1px 2px 4px rgba(0,0,0,0.3);
     position: relative;
+    border: 1px solid #ddd;
 }
 
 .subscription-card div {
@@ -149,8 +227,41 @@ input {
 .edit-icon {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: 3rem;
+  cursor: pointer;
 }
+
+.del {
+    right: 1rem;
+    color: red;
+    font-weight: 600;
+}
+
+.plus {
+    color: green;
+    font-weight: 600;
+}
+
+.cancel {
+    right: 5rem;
+    border: 1px solid #e64646;
+    border-radius: 10px;
+    padding: 0.3rem 0.8rem;
+    background: transparent;
+    color: #e64646;
+    font-size: 12px;
+}
+
+/* .edit-del-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 0.3rem 2rem;
+    font-size: 12px;
+    cursor: pointer;
+} */
 
 .add-sub-modal {
     background-color: #fff;
@@ -158,8 +269,8 @@ input {
     border-radius: 10px;
     padding: 2rem;
     z-index: 5;
-    position: absolute;
-    top: 10%;
+    position: fixed;
+    top: 8%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -168,15 +279,12 @@ input {
 
 .name {
     font-size: 24px;
+    font-weight: 500;
 }
 
 .sub-plan {
     font-size: 14px;
-    color: #969696;
-}
-
-.billing-cycle {
-
+    color: #666666;
 }
 
 .sub-amount {
@@ -191,10 +299,20 @@ input {
 
 .category {
     background-color: #ccc;
-
+    margin-right: 0.5rem;
 }
 
 .payment-method {
     background-color: #4cad6e;
     color: white;
 }
+
+.empty-subscription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 50vh;
+}
+
