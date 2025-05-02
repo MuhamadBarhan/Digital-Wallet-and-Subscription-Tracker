@@ -1,4 +1,4 @@
-{{page-title "AssessmentApp"}}
+{{page-title "Assessment-App"}}
 
 {{outlet}}
 
@@ -10,9 +10,9 @@
         <div class="my-wallet">
             <h2>My Wallet</h2>
             <p class="amount-title">Current Balance</p>
-            <span class="amount"><i class="bi bi-currency-rupee"></i> {{this.amount}}</span>
+            <span class="amount"><i class="bi bi-currency-rupee"></i>{{this.amount}}</span>
             <div class="wallet-btn-container">
-                <button class="wallet-btn withdraw" type="button">Withdraw</button>
+                <button class="wallet-btn withdraw" type="button"><i class="bi bi-box-arrow-down"></i> Withdraw</button>
                 <button class="wallet-btn add-money" type="button" {{on "click" this.toggleModal}}><i
                         class="bi bi-wallet"></i> Add Money</button>
             </div>
@@ -21,22 +21,38 @@
         <div class="transaction-history">
             <div class="transaction-header">
                 <span class="heading">Transaction History</span>
-                <button class="filter" {{on "click" this.toggleFilter}}><i class="bi bi-funnel"></i> Filter</button>
+                <button class="filter" type="button" {{on "click" this.toggleFilter}}><i class="bi bi-funnel"></i> Filter</button>
                 {{#if this.isFilterOpen}}
                 <div class="filter-modal">
-                    <input type="checkbox" id="debit"><label for="debit">Debit</label><br>
-                    <input type="checkbox" id="refund"><label for="refund">Refund</label><br>
-                    <input type="checkbox" id="credit"><label for="credit">Credit</label>
-                </div>
+                    <input type="checkbox" value="debit" name="filter-check" id="debit"><label
+                        for="debit">Debit</label><br>
+                    <input type="checkbox" value="refund" name="filter-check" id="refund"><label
+                        for="refund">Refund</label><br>
+                    <input type="checkbox" value="credit" name="filter-check" id="credit"><label
+                        for="credit">Credit</label>
+                    <div>
+                        <button class="filter-modal-btn" type="button" {{on "click" this.clearFilter}}>Clear</button>
+                        <button class="filter-modal-btn" type="button" {{on "click" this.applyFilter}}>Apply</button>
+                    </div>
 
+                </div>
                 {{/if}}
             </div>
-            {{#each this.history as |hist|}}
+            {{#each (reverse-array this.filteredHistory) as |hist|}}
             <div class="transaction">
-                <span class="hist-name">{{hist.name}}</span>
-                <span class="hist-desc">{{hist.transaction}}</span>
-                <span class={{if (eq hist.transaction "Subscribed" ) "del" "plus" }}>{{if (eq hist.transaction
-                    "Subscribed") "-" "+"}}{{hist.subamount}}</span>
+                <div>
+
+                    <span class="hist-name">{{hist.name}}</span> <br>
+                    <span class="hist-desc">{{hist.subdate.date}} {{hist.subdate.month}} {{hist.subdate.year}}
+                        {{hist.subdate.hour}}:{{hist.subdate.minute}}</span>
+                </div>
+                <span class={{if (eq hist.transaction "Debit" ) "del" "plus" }}>{{if (eq hist.transaction
+                    "Debit") "-" "+"}}<i class="bi bi-currency-rupee"></i>{{hist.subamount}}</span>
+            </div>
+            {{else}}
+            <div class="empty-transaction">
+                <img src="/notran.png" alt="img" style="width: 150px; height:150px; margin:2rem;">
+                <p style="font-size: 18px; font-weight:600; margin:0;">No transactions found</p>
             </div>
             {{/each}}
         </div>
@@ -59,32 +75,36 @@
                 <span class="heading">Subscription Tracker</span>
                 <span class="description">Your subscriptions</span>
             </div>
-            <button class="add-sub-btn" type="button" {{on "click" this.toggleSubModal}}>Add Subscription</button>
+            <button class="add-sub-btn" type="button" {{on "click" this.toggleSubModal}}><i class="bi bi-plus-lg"></i>
+                Add Subscription</button>
         </div>
 
         <div class="subscriptions">
             {{#each this.subscriptions as |subscription index|}}
             <div class="subscription-card">
                 <i class="bi bi-pencil-square edit-icon" {{on "click" (fn this.editSubscription index)}}></i>
-                <i class="bi bi-trash edit-icon del" {{on "click" (fn this.dltSubscription index)}}></i>
-                <button class="edit-icon cancel" {{on "click" (fn this.cancelSubscription index)}}>Cancel
+                <i class="bi bi-trash edit-icon del-icon" {{on "click" (fn this.dltSubscription index)}}></i>
+                <button class="edit-icon cancel" type="button" {{on "click" (fn this.cancelSubscription index)}}>Cancel
                     Subscription</button>
                 <span class="name">{{subscription.name}}</span>
                 <span class="sub-plan">{{subscription.subplan}}</span>
-                <div>
-                    <span class="sub-amount"><i class="bi bi-currency-rupee"></i> {{subscription.subamount}}</span>/
-                    <span class="billing-cycle">{{subscription.billcycle}}</span>
-                </div>
+                <span class="sub-amount"><i class="bi bi-currency-rupee"></i> {{subscription.subamount}} <span
+                        class="billing-cycle"><span
+                            style="color: #6c6c6c;">/</span>{{subscription.billcycle}}</span></span>
                 <div>
                     <span class="category">{{subscription.category}}</span>
                     <span class="payment-method">{{subscription.paymethod}}</span>
                 </div>
+                <span class="valid-date"><i class="bi bi-calendar4"></i> Valid till {{subscription.validity.date}}
+                    {{subscription.validity.month}} {{subscription.validity.year}},
+                    {{subscription.validity.hour}}:{{subscription.validity.minute}}</span>
+                    <span class="notify">{{#if subscription.notify}} <i class="bi bi-exclamation-circle"></i>{{/if}} {{subscription.notify}}</span>
             </div>
 
             {{else}}
             <div class="empty-subscription">
-                <img src="/nosub.png" alt="img" style="width: 500px; height:500px; margin:1rem">
-                <p style="font-size: 18px; font-weight:600">No Subscriptions Found</p>
+                <img src="/nosub.png" alt="img" style="width: 300px; height:300px; margin:1rem">
+                <p style="font-size: 18px; font-weight:600; margin:0;">No Subscriptions Found</p>
             </div>
             {{/each}}
 
