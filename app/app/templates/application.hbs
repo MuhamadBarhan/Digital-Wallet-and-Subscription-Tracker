@@ -23,9 +23,8 @@
         {{!-- Transaction history --}}
         <div class="transaction-history">
             <div class="transaction-header">
-                <span class="heading"><i class="bi bi-clock-history"></i> Transaction History</span>
-                <button class="filter" type="button" {{on "click" this.toggleFilter}}><i class="bi bi-funnel"></i>
-                    Filter</button>
+                <span class="heading">Transaction History</span>
+                <button class="filter" type="button" {{on "click" this.toggleFilter}}><i class="bi bi-funnel"></i> Filter</button>
                 {{#if this.isFilterOpen}}
                 <div class="filter-modal">
                     <input type="checkbox" value="debit" name="filter-check" id="debit"><label
@@ -64,8 +63,6 @@
         <div class="overlay"></div>
         <div class="add-modal">
             <i class="bi bi-x-lg close-icon" {{on "click" this.toggleModal}}></i>
-
-            <img src="/amount.png" alt="img" style="width: 250px; height:250px; margin:1rem">
             <label for="amount-value">Amount</label>
             <input type="number" placeholder="Enter Amount" id="amount-value">
             <button class="add-btn" type="button" {{on "click" this.addToWallet}}>Add to Wallet</button>
@@ -104,8 +101,7 @@
                 <span class="valid-date"><i class="bi bi-calendar4"></i> Valid till {{subscription.validity.date}}
                     {{subscription.validity.month}} {{subscription.validity.year}},
                     {{subscription.validity.hour}}:{{subscription.validity.minute}}</span>
-                <span class="notify">{{#if subscription.notify}} <i class="bi bi-exclamation-circle"></i>{{/if}}
-                    {{subscription.notify}}</span>
+                    <span class="notify">{{#if subscription.notify}} <i class="bi bi-exclamation-circle"></i>{{/if}} {{subscription.notify}}</span>
             </div>
 
             {{else}}
