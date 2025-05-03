@@ -29,8 +29,6 @@ body {
 
 .container {
     display: flex;
-
-    /* flex-wrap: wrap; */
     gap: 2rem;
     margin: 2rem 0;
 
@@ -126,6 +124,7 @@ input {
     top: 4.5rem;
     right: 1rem;
     box-shadow: 2px 4px 6px rgb(0 0 0 / 10%);
+    z-index: 100;
 }
 
 .filter-modal label {
@@ -151,7 +150,7 @@ input[type="checkbox"] {
     box-shadow: 1px 2px 4px rgb(0 0 0 / 20%);
     border: 1px solid #ddd;
     position: relative;
-    max-height: 500px;
+    height: 500px;
     overflow-y: scroll;
 }
 

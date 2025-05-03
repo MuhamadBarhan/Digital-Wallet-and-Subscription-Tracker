@@ -146,7 +146,6 @@ export default class ApplicationController extends Controller {
 
         } else if (subscription.billcycle == "Seconds") {
             var newDate = new Date(new Date().setSeconds(new Date().getSeconds() + 10));
-            console.log(newDate);
             subscription.validity = this.validitySetter(newDate);
         }
     }
@@ -162,6 +161,7 @@ export default class ApplicationController extends Controller {
         }
 
         if (!this.isEditing) {
+            
             if (subscription.paymethod == "Wallet") {
                 if (parseInt(this.subamount) <= parseInt(this.amount)) {
                     this.amount = this.amount - this.subamount;
@@ -176,7 +176,6 @@ export default class ApplicationController extends Controller {
                         month: this.months[new Date().getMonth()],
                         year: new Date().getFullYear(),
                     };
-
                     this.checkCycle(subscription);
                     this.addToLocal(subscription);
                 } else {
@@ -187,12 +186,25 @@ export default class ApplicationController extends Controller {
             }
 
         } else {
+            subscription.transaction = "Debit";
+            subscription.subdate = {
+                date: new Date().getDate(),
+                day: new Date().getDay(),
+                hour: new Date().getHours(),
+                minute: new Date().getMinutes() < 10 ? "0" + new Date().getMinutes() : new Date().getMinutes(),
+                seconds: new Date().getSeconds(),
+                month: this.months[new Date().getMonth()],
+                year: new Date().getFullYear(),
+            };
             this.checkCycle(subscription);
             this.subscriptions[this.editIndex] = subscription;
-            this.isEditing = !this.isEditing;
             localStorage.setItem("subscriptions", JSON.stringify(this.subscriptions))
-            this.toggleSubModal();
+            this.history = this.history ? [...this.history, subscription] : [subscription];
+            localStorage.setItem("history", JSON.stringify(this.history));
+            this.isEditing = !this.isEditing;
+            this.loadHistory();
             this.loadSubscription();
+            this.toggleSubModal();
             this.resetInputs();
         }
     }
@@ -254,15 +266,13 @@ export default class ApplicationController extends Controller {
     @action applyFilter() {
         let checkboxes = Array.from(document.querySelectorAll('input[name="filter-check"]:checked'));
         let checked = checkboxes.map(cb => cb.value)
-        console.log(checked)
         if (checked == '') {
             alert("Select a filter");
             return;
         }
-        this.filteredHistory = this.history.filter(h => {
-            return checked.includes(h.transaction.toLowerCase())
-        }
-        );
+        this.filteredHistory = this.history.filter(hist => {
+            return checked.includes(hist?.transaction?.toLowerCase())
+        });
         this.toggleFilter();
     }
 
@@ -294,8 +304,8 @@ export default class ApplicationController extends Controller {
 
     @action loadHistory() {
         const resHistory = JSON.parse(localStorage.getItem("history"));
-        this.history = resHistory;
-        this.filteredHistory = this.history ? [...this.history] : [];
+        this.history = resHistory?resHistory:[];
+        this.filteredHistory = [...this.history];
     }
 
 
@@ -346,6 +356,7 @@ export default class ApplicationController extends Controller {
                     });
                     localStorage.setItem("subscriptions", JSON.stringify(this.subscriptions));
                     this.loadSubscription();
+                    yield timeout(4000)
 
                 } while (updated);
 
